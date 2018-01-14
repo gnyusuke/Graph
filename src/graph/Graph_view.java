@@ -1,6 +1,7 @@
 package graph;
 
 import java.awt.BorderLayout;
+
 import java.awt.Button;
 import java.awt.FlowLayout;
 import java.awt.Frame;
@@ -8,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -15,21 +18,25 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+
+
 public class Graph_view extends Frame implements ActionListener,WindowListener{
 	
-	private Button button1 = new Button("BarChart");
+/*	private Button button1 = new Button("BarChart");
 	private Button button2 = new Button("LineChart");
-	
+*/
 
 
 
-	public Graph_view(int a){
+	public Graph_view(){
 				
 	     addWindowListener(this);
 	     setTitle("Graph");
 	     setLayout(new FlowLayout(FlowLayout.CENTER));
+	     Bargraph();
+	     
 			
-	     add(button1);
+	/*     add(button1);
 	     add(button2);
 	     
 		 button1.addActionListener(this);		 
@@ -40,21 +47,39 @@ public class Graph_view extends Frame implements ActionListener,WindowListener{
 	     }else if(a==1){
 	    	  Linegraph();
 	      }
-	  }
+	  */
+     }
 	 
 	    
               
     
 	public void Bargraph(){//棒グラフを作成する関数
+		DefaultCategoryDataset data = new DefaultCategoryDataset();     		
+
+     	//int id, year,ton;
+		int ton;
+		String name,year;
+		ResultSet rs;
+		MySQL mysql = new MySQL();
+		rs = mysql.selectAll();
 		
-		DefaultCategoryDataset data = new DefaultCategoryDataset();
-     	
-		data.addValue(300, "USA", "2005");
+		try {
+			while(rs.next()){
+			    name = rs.getString("name");
+			    year = rs.getString("year");
+			    ton = rs.getInt("ton");	
+			    data.addValue(ton,  name, year);
+			}  //try catchで囲む
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		/*data.addValue(ton, "USA", "2005");
 		data.addValue(500, "USA", "2006");
 		data.addValue(120, "USA", "2007");
-	
-
-	  	JFreeChart chart = 
+	*/
+	   	  	JFreeChart chart = 
 				      ChartFactory.createBarChart("Import Volume",
 				                                   "Year",
 				                                   "Ton",
@@ -67,7 +92,7 @@ public class Graph_view extends Frame implements ActionListener,WindowListener{
 		    add(cpanel, BorderLayout.CENTER);
 		    			         
    }
-	public void Linegraph(){//折れ線グラフを作成する関数
+	/*public void Linegraph(){//折れ線グラフを作成する関数
 
 	     DefaultCategoryDataset data = new DefaultCategoryDataset();
 	     	
@@ -86,8 +111,8 @@ public class Graph_view extends Frame implements ActionListener,WindowListener{
 			
 			ChartPanel cpanel = new ChartPanel(chart);
 		    add(cpanel, BorderLayout.CENTER);
-		    			         
-  }
+		*/
+
 
 	@Override
 	public void windowOpened(WindowEvent e) {
@@ -135,7 +160,7 @@ public class Graph_view extends Frame implements ActionListener,WindowListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-	     		if(e.getSource() == button1){
+	/*     		if(e.getSource() == button1){
 	     			
 	     			dispose();
 	     			Graph_view graph = new Graph_view(0);
@@ -148,7 +173,7 @@ public class Graph_view extends Frame implements ActionListener,WindowListener{
 	     			graph.setVisible(true);
 
 				 }
-
+*/
 
 
 		
